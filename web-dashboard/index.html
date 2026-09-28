@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VentureSeed Capital Networks | High-Scale Crowdfunding Orchestration Engine</title>
+    <meta name="description" content="Enterprise Digital Capital Campaign & Micro-Contribution Management Platform powered by Spring Cloud Microservices, Eureka, and API Gateway.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background glowing gradient orbs -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+    <div class="glow-bg glow-3"></div>
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="logo-mark">
+                    <span class="logo-icon">🌱</span>
+                </div>
+                <div class="brand-text">
+                    <h1 class="brand-title">VentureSeed</h1>
+                    <span class="brand-badge">Capital Networks</span>
+                </div>
+            </div>
+
+            <!-- Microservices Health Status Bar -->
+            <div class="mesh-status-indicator" id="meshStatusIndicator" title="Click to view microservices topology">
+                <span class="status-dot pulsating"></span>
+                <span class="status-label">Mesh: <strong id="gatewayStatusText">Connecting...</strong></span>
+                <span class="status-tag" id="meshModeBadge">LIVE GATEWAY</span>
+            </div>
+
+            <div class="header-actions">
+                <button class="btn btn-outline" id="btnToggleTopology">
+                    <span class="icon">⚡</span> Architecture Mesh
+                </button>
+                <button class="btn btn-outline" id="btnToggleApiConsole">
+                    <span class="icon">🛠️</span> API Console
+                </button>
+                <button class="btn btn-primary" id="btnOpenCreateCampaign" style="display: none;">
+                    <span class="icon">+</span> Launch Campaign
+                </button>
+
+                <!-- Current User Profile Pill -->
+                <div class="user-pill" id="userPill" title="Click to switch test accounts">
+                    <div class="user-avatar" id="userAvatar">DV</div>
+                    <div class="user-info">
+                        <span class="user-name" id="userName">David Vance</span>
+                        <span class="user-role-badge backer" id="userRoleBadge">ROLE_BACKER</span>
+                    </div>
+                    <span class="switch-arrow">▼</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <!-- Hero Section & Key Performance Indicators -->
+        <section class="hero-section">
+            <div class="hero-header">
+                <div class="hero-tag">ENTERPRISE CROWDFUNDING PLATFORM</div>
+                <h2 class="hero-title">Fueling High-Impact Innovation Through Micro-Contributions</h2>
+                <p class="hero-subtitle">
+                    Distributed microservices architecture orchestrating live campaign lifecycles, real-time pledge tracking, and high-concurrency payment settlement.
+                </p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap emerald">💵</div>
+                    <div class="kpi-meta">
+                        <span class="kpi-label">Total Capital Raised</span>
+                        <div class="kpi-value" id="kpiTotalRaised">$271,550</div>
+                        <span class="kpi-subtext" id="kpiRaisedGrowth">↑ Real-Time Platform Sum</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap violet">🚀</div>
+                    <div class="kpi-meta">
+                        <span class="kpi-label">Active Campaigns</span>
+                        <div class="kpi-value" id="kpiActiveCampaigns">3</div>
+                        <span class="kpi-subtext">Accepting Micro-Pledges</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap amber">🏆</div>
+                    <div class="kpi-meta">
+                        <span class="kpi-label">Successfully Funded</span>
+                        <div class="kpi-value" id="kpiFundedCampaigns">1</div>
+                        <span class="kpi-subtext">Disbursement Ready</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon-wrap cyan">👥</div>
+                    <div class="kpi-meta">
+                        <span class="kpi-label">Total Global Backers</span>
+                        <div class="kpi-value" id="kpiTotalBackers">756</div>
+                        <span class="kpi-subtext">Active Contributors</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Contribution Ticker -->
+        <section class="ticker-section">
+            <div class="ticker-header">
+                <span class="live-dot"></span>
+                <span class="ticker-title">LIVE CONTRIBUTION STREAM</span>
+            </div>
+            <div class="ticker-container" id="tickerContainer">
+                <div class="ticker-track" id="tickerTrack">
+                    <!-- Dynamic ticker items inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Campaigns Section -->
+        <section class="campaigns-section">
+            <div class="section-toolbar">
+                <div class="category-filters" id="categoryFilters">
+                    <button class="filter-btn active" data-category="ALL">All Categories</button>
+                    <button class="filter-btn" data-category="CLEAN_ENERGY">Clean Energy</button>
+                    <button class="filter-btn" data-category="BIOTECH">Biotech</button>
+                    <button class="filter-btn" data-category="TECH_AI">Tech & AI</button>
+                    <button class="filter-btn" data-category="SOCIAL_IMPACT">Social Impact</button>
+                    <button class="filter-btn" data-category="CREATIVE_ARTS">Creative Arts</button>
+                </div>
+
+                <div class="search-sort-group">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="campaignSearchInput" placeholder="Search campaigns, innovations...">
+                    </div>
+                    <select id="statusFilterSelect" class="select-filter">
+                        <option value="ALL">All Statuses</option>
+                        <option value="ACTIVE" selected>Active Only</option>
+                        <option value="FUNDED">Funded</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Campaign Cards Grid -->
+            <div class="campaign-grid" id="campaignGrid">
+                <!-- Dynamically populated campaign cards -->
+            </div>
+        </section>
+
+        <!-- Architecture Topology & Flow Section (Collapsible / Modal) -->
+        <section class="architecture-section" id="architectureSection">
+            <div class="arch-card">
+                <div class="arch-header">
+                    <div class="arch-title-group">
+                        <span class="arch-tag">MICROSERVICES BLUEPRINT</span>
+                        <h3>VentureSeed Enterprise Topology & Pipeline</h3>
+                    </div>
+                    <button class="btn-close-section" id="btnCloseArch">×</button>
+                </div>
+
+                <div class="arch-flow-diagram">
+                    <div class="arch-node client-node">
+                        <div class="node-icon">💻</div>
+                        <div class="node-info">
+                            <strong>Web Client UI</strong>
+                            <span>Port 3000 / Browser</span>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow">JWT Auth Ingress ➔</div>
+
+                    <div class="arch-node gateway-node">
+                        <div class="node-icon">🛡️</div>
+                        <div class="node-info">
+                            <strong>API Gateway</strong>
+                            <span>Port 8080 (Reactive Gateway)</span>
+                            <small>Token Filter • CORS • LoadBalancer</small>
+                        </div>
+                    </div>
+
+                    <div class="flow-arrow">Eureka Discovery ➔</div>
+
+                    <div class="arch-node eureka-node">
+                        <div class="node-icon">📡</div>
+                        <div class="node-info">
+                            <strong>Netflix Eureka</strong>
+                            <span>Port 8761 (Registry)</span>
+                            <small>Heartbeat • Instance Locator</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services-matrix-grid">
+                    <div class="service-box">
+                        <div class="service-header">
+                            <span class="srv-badge">PORT 8081</span>
+                            <strong>Auth & Identity Service</strong>
+                        </div>
+                        <p>Issues JWT tokens with HMAC-SHA256, BCrypt user credentials, role verification (CREATOR, BACKER).</p>
+                        <div class="srv-endpoints">
+                            <code>POST /api/auth/login</code>
+                            <code>POST /api/auth/register</code>
+                            <code>GET /api/auth/validate</code>
+                        </div>
+                    </div>
+
+                    <div class="service-box">
+                        <div class="service-header">
+                            <span class="srv-badge">PORT 8082</span>
+                            <strong>Campaign Lifecycle Service</strong>
+                        </div>
+                        <p>Orchestrates goal metrics, status transitions (DRAFT -> ACTIVE -> FUNDED), deadline tracking, and aggregate calculations.</p>
+                        <div class="srv-endpoints">
+                            <code>GET /api/campaigns</code>
+                            <code>POST /api/campaigns</code>
+                            <code>POST /{id}/contribute-internal</code>
+                        </div>
+                    </div>
+
+                    <div class="service-box highlight-box">
+                        <div class="service-header">
+                            <span class="srv-badge">PORT 8083</span>
+                            <strong>Contribution Service</strong>
+                        </div>
+                        <p>Coordinates inter-service pipeline via OpenFeign: <strong>Contribution ➔ Campaign ➔ Payment</strong> with transaction ledger.</p>
+                        <div class="srv-endpoints">
+                            <code>POST /api/contributions</code>
+                            <code>GET /api/contributions/campaign/{id}</code>
+                            <code>GET /api/contributions/stats/total</code>
+                        </div>
+                    </div>
+
+                    <div class="service-box">
+                        <div class="service-header">
+                            <span class="srv-badge">PORT 8084</span>
+                            <strong>Payment Processor Service</strong>
+                        </div>
+                        <p>Simulates multi-rail payment gateway (Credit Cards, Crypto USDC, Wire) with idempotency key deduplication and creator payouts.</p>
+                        <div class="srv-endpoints">
+                            <code>POST /api/payments/charge</code>
+                            <code>POST /api/payments/disburse</code>
+                            <code>GET /api/payments/transactions/{ref}</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive API Gateway Console Drawer -->
+        <section class="api-console-section" id="apiConsoleSection">
+            <div class="console-card">
+                <div class="console-header">
+                    <div class="console-title-group">
+                        <span class="console-badge">REST API PLAYGROUND</span>
+                        <h3>Interactive Ingress API Gateway Tester (Port 8080)</h3>
+                    </div>
+                    <button class="btn-close-section" id="btnCloseConsole">×</button>
+                </div>
+
+                <div class="console-body">
+                    <div class="console-controls">
+                        <div class="form-group">
+                            <label>Quick Preset Endpoint:</label>
+                            <select id="apiPresetSelect" class="form-control">
+                                <option value="get_metrics">GET /api/campaigns/metrics - Platform Summary</option>
+                                <option value="get_campaigns">GET /api/campaigns - List All Campaigns</option>
+                                <option value="auth_login">POST /api/auth/login - Authenticate & Get JWT</option>
+                                <option value="create_campaign">POST /api/campaigns - Create Campaign (Creator JWT)</option>
+                                <option value="make_contribution">POST /api/contributions - Back Campaign (Feign Pipeline)</option>
+                                <option value="test_payment">POST /api/payments/charge - Direct Payment Test</option>
+                            </select>
+                        </div>
+
+                        <div class="endpoint-bar">
+                            <select id="apiMethodSelect" class="select-method">
+                                <option value="GET">GET</option>
+                                <option value="POST">POST</option>
+                                <option value="PUT">PUT</option>
+                            </select>
+                            <input type="text" id="apiEndpointUrl" class="input-url" value="/api/campaigns/metrics">
+                            <button class="btn btn-primary" id="btnExecuteApi">Send Request</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>JWT Authorization Token (Automatically injected from active user):</label>
+                            <input type="text" id="apiJwtTokenInput" class="form-control mono-font" placeholder="Bearer eyJhbGciOiJIUzI1NiJ9...">
+                        </div>
+
+                        <div class="form-group" id="reqBodyGroup">
+                            <label>Request Body (JSON):</label>
+                            <textarea id="apiRequestBody" class="form-control mono-font" rows="5" placeholder="{}"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="console-output">
+                        <div class="output-header">
+                            <span>Response Output</span>
+                            <span class="output-status" id="apiResponseStatus">Status: Ready</span>
+                        </div>
+                        <pre class="response-viewer" id="apiResponseViewer">{\n  "message": "Click 'Send Request' to test the endpoint through API Gateway (8080)"\n}</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Back Campaign (Micro-Contribution) -->
+    <div class="modal-backdrop" id="backCampaignModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-tag">PLEDGE CONTRIBUTION</span>
+                    <h3 id="modalCampaignTitle">Back Campaign</h3>
+                </div>
+                <button class="modal-close-btn" id="btnCloseBackModal">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="campaign-summary-pill">
+                    <span class="summary-target">Goal: <strong id="modalGoalAmount">$0</strong></span>
+                    <span class="summary-current">Current: <strong id="modalCurrentAmount">$0</strong></span>
+                    <span class="summary-progress" id="modalProgressPct">0%</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Contribution Amount (USD):</label>
+                    <div class="preset-amounts" id="presetAmounts">
+                        <button class="amount-btn" data-amount="25">$25</button>
+                        <button class="amount-btn" data-amount="50">$50</button>
+                        <button class="amount-btn active" data-amount="100">$100</button>
+                        <button class="amount-btn" data-amount="250">$250</button>
+                        <button class="amount-btn" data-amount="1000">$1,000</button>
+                    </div>
+                    <div class="custom-amount-wrap">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="customAmountInput" class="form-control" value="100" min="1" step="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Payment Method:</label>
+                    <div class="payment-method-selector">
+                        <label class="method-option active">
+                            <input type="radio" name="paymentMethod" value="CREDIT_CARD" checked>
+                            <span class="method-icon">💳</span>
+                            <span>Credit Card</span>
+                        </label>
+                        <label class="method-option">
+                            <input type="radio" name="paymentMethod" value="CRYPTO_USDC">
+                            <span class="method-icon">🪙</span>
+                            <span>USDC Crypto</span>
+                        </label>
+                        <label class="method-option">
+                            <input type="radio" name="paymentMethod" value="DIGITAL_WALLET">
+                            <span class="method-icon">📱</span>
+                            <span>Digital Wallet</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Message / Note to Founder (Optional):</label>
+                    <textarea id="contributionMessage" class="form-control" rows="2" placeholder="Cheering for your success!"></textarea>
+                </div>
+
+                <div class="pipeline-callout">
+                    <div class="pipeline-step">
+                        <span class="step-num">1</span>
+                        <span>Gateway JWT & Ingress Check</span>
+                    </div>
+                    <div class="pipeline-arrow">➔</div>
+                    <div class="pipeline-step">
+                        <span class="step-num">2</span>
+                        <span>Payment Processor Charge</span>
+                    </div>
+                    <div class="pipeline-arrow">➔</div>
+                    <div class="pipeline-step">
+                        <span class="step-num">3</span>
+                        <span>Live Campaign Goal Update</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelPledge">Cancel</button>
+                <button class="btn btn-primary" id="btnSubmitPledge">
+                    <span id="pledgeBtnText">Confirm Contribution ($100)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Launch New Campaign -->
+    <div class="modal-backdrop" id="createCampaignModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-tag">CREATOR STUDIO</span>
+                    <h3>Launch Capital Campaign</h3>
+                </div>
+                <button class="modal-close-btn" id="btnCloseCreateModal">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Campaign Title:</label>
+                    <input type="text" id="newCampaignTitle" class="form-control" placeholder="e.g., HelioDrive: Quantum Solar Propulsion">
+                </div>
+
+                <div class="form-group">
+                    <label>Tagline / Pitch (Short Summary):</label>
+                    <input type="text" id="newCampaignTagline" class="form-control" placeholder="Brief 1-sentence hook for backers">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label>Category:</label>
+                        <select id="newCampaignCategory" class="form-control">
+                            <option value="CLEAN_ENERGY">Clean Energy</option>
+                            <option value="BIOTECH">Biotech</option>
+                            <option value="TECH_AI">Tech & AI</option>
+                            <option value="SOCIAL_IMPACT">Social Impact</option>
+                            <option value="CREATIVE_ARTS">Creative Arts</option>
+                            <option value="EDUCATION">Education</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label>Target Goal Amount ($ USD):</label>
+                        <input type="number" id="newCampaignGoal" class="form-control" value="50000" min="100" step="500">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label>Campaign Deadline:</label>
+                        <input type="date" id="newCampaignDeadline" class="form-control">
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label>Hero Image URL:</label>
+                        <input type="url" id="newCampaignImage" class="form-control" placeholder="https://images.unsplash.com/...">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Detailed Description & Roadmap:</label>
+                    <textarea id="newCampaignDesc" class="form-control" rows="4" placeholder="Detail your technical milestone roadmap, budget breakdown, and impact..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btnCancelCreate">Cancel</button>
+                <button class="btn btn-primary" id="btnSubmitCreateCampaign">Publish Campaign</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: User Switcher / Authentication -->
+    <div class="modal-backdrop" id="userSwitcherModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-tag">AUTHENTICATION & IDENTITY</span>
+                    <h3>Select Active Persona</h3>
+                </div>
+                <button class="modal-close-btn" id="btnCloseUserModal">×</button>
+            </div>
+
+            <div class="modal-body">
+                <p class="modal-hint">Switch between roles to test Creator campaign launches and Backer micro-contributions with pre-generated JWT tokens:</p>
+
+                <div class="user-profiles-list">
+                    <div class="persona-card active" data-user-id="2" data-role="ROLE_BACKER" data-name="David Vance" data-email="backer@ventureseed.com">
+                        <div class="persona-avatar backer">DV</div>
+                        <div class="persona-info">
+                            <strong>David Vance</strong>
+                            <span>backer@ventureseed.com</span>
+                            <span class="user-role-badge backer">ROLE_BACKER</span>
+                        </div>
+                    </div>
+
+                    <div class="persona-card" data-user-id="1" data-role="ROLE_CREATOR" data-name="Elena Rostova" data-email="creator@ventureseed.com">
+                        <div class="persona-avatar creator">ER</div>
+                        <div class="persona-info">
+                            <strong>Elena Rostova</strong>
+                            <span>creator@ventureseed.com</span>
+                            <span class="user-role-badge creator">ROLE_CREATOR</span>
+                        </div>
+                    </div>
+
+                    <div class="persona-card" data-user-id="3" data-role="ROLE_CREATOR" data-name="Dr. Aris Thorne" data-email="founder@quantumleaf.io">
+                        <div class="persona-avatar creator">AT</div>
+                        <div class="persona-info">
+                            <strong>Dr. Aris Thorne</strong>
+                            <span>founder@quantumleaf.io</span>
+                            <span class="user-role-badge creator">ROLE_CREATOR</span>
+                        </div>
+                    </div>
+
+                    <div class="persona-card" data-user-id="4" data-role="ROLE_BACKER" data-name="Sophia Chen" data-email="investor@summitcapital.com">
+                        <div class="persona-avatar backer">SC</div>
+                        <div class="persona-info">
+                            <strong>Sophia Chen</strong>
+                            <span>investor@summitcapital.com</span>
+                            <span class="user-role-badge backer">ROLE_BACKER</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
